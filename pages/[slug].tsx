@@ -74,14 +74,8 @@ export default function Index(props: Props) {
   );
 }
 
-export async function getServerSideProps({
-  res,
-  query,
-}: {
-  res: any;
-  query: any;
-}) {
-  let row = await getFirmRow(query.slug);
+export async function getStaticProps(ctx: any) {
+  let row = await getFirmRow(ctx.params.slug);
   let values = null;
   if (row) {
     values = await getFirmValues(row);
@@ -89,6 +83,15 @@ export async function getServerSideProps({
 
   return {
     props: values,
+  };
+}
+
+export async function getStaticPaths() {
+  let paths = await getPaths();
+
+  return {
+    paths: paths,
+    fallback: false,
   };
 }
 
@@ -137,5 +140,27 @@ const getFirmValues = (row: number) => {
     });
 
     resolve(obj);
+  });
+};
+
+const getPaths = (): Promise<string[]> => {
+  return new Promise((resolve, rej) => {
+    const sheets = google.sheets({ version: "v4" });
+    sheets.spreadsheets.values.get(
+      {
+        spreadsheetId: "19PJUnp_EE-9a21R2RxsI_yu_owei4AkltgiIJdV175s",
+        range: "Sheet1!A:A",
+        key: process.env.GOOGLE_KEY,
+      },
+      (err: any, res: any) => {
+        const rows = res.data.values;
+        const paths: string[] = [];
+
+        rows.forEach((row: string[], i: number) => {
+          if (i > 0) paths.push(`/${row}`);
+        });
+        resolve(paths);
+      }
+    );
   });
 };
