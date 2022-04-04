@@ -2,18 +2,18 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 const { google } = require("googleapis");
 
-import Navigation from "../components/nav/centered-header-transparent";
-import Hero from "../components/heros/hero";
-import Experience from "../components/subheroSections/experience";
-import WhatWeDo from "../components/subheroSections/whatWeDo";
-import Independendent from "../components/subheroSections/independent";
-import FeeOnly from "../components/subheroSections/FeeOnly";
-import Fiduciary from "../components/subheroSections/fiduciary";
-import Team from "../components/subheroSections/team";
-import SingleBio from "../components/subheroSections/singleBio";
-import Footer from "../components/subheroSections/footer";
-import Demo from "../components/DemoSite";
-import Modal from "../components/modal";
+import Navigation from "../../components/nav/centered-header-transparent";
+import Hero from "../../components/heros/hero";
+import Experience from "../../components/subheroSections/experience";
+import WhatWeDo from "../../components/subheroSections/whatWeDo";
+import Independendent from "../../components/subheroSections/independent";
+import FeeOnly from "../../components/subheroSections/FeeOnly";
+import Fiduciary from "../../components/subheroSections/fiduciary";
+import Team from "../../components/subheroSections/team";
+import SingleBio from "../../components/subheroSections/singleBio";
+import Footer from "../../components/subheroSections/footer";
+import Demo from "../../components/DemoSite";
+import Modal from "../../components/modal";
 
 interface Props {
   slug: string;
@@ -136,7 +136,7 @@ const getFirmValues = (row: number) => {
     let obj: { [key: string]: string } = {};
 
     header.data.values[0].forEach((item: string, i: number) => {
-      obj[item] = data.data.values[0][i];
+      obj[item] = data.data.values[0][i] ? data.data.values[0][i] : "";
     });
 
     resolve(obj);
