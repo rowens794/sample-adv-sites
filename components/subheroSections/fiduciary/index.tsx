@@ -2,6 +2,8 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import FiduciaryDuty from "../../../components/graphics/fiduciaryDuty";
+
 type Props = {
   res: any;
   referToWe: boolean;
@@ -10,16 +12,8 @@ type Props = {
 export default function index({ res, referToWe }: Props) {
   return (
     <div className="flex flex-col-reverse max-w-5xl gap-12 px-4 py-16 mx-auto md:py-32 md:flex-row">
-      <div className="relative flex items-center">
-        <div className="bg-gray-400 h-[300px] w-[300px] mx-auto" />
-
-        {/* <Image
-          src="/images/client-meeting.jpg"
-          alt="client meeting"
-          layout="fill"
-          objectFit="cover"
-          className="z-10 transform object-right-middle "
-        /> */}
+      <div className="relative flex items-center mx-auto">
+        <FiduciaryDuty />
       </div>
 
       <div className="relative flex items-center ">

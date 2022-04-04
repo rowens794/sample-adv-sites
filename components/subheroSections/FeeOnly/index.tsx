@@ -2,6 +2,8 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import FeeOnly from "../../../components/graphics/FeeOnly";
+
 type Props = {
   res: any;
   referToWe: boolean;
@@ -31,15 +33,7 @@ export default function index({ res, referToWe }: Props) {
       </div>
 
       <div className="relative flex items-center mx-auto">
-        <div className="bg-gray-400 h-[300px] w-[300px]" />
-
-        {/* <Image
-          src="/images/client-meeting.jpg"
-          alt="client meeting"
-          layout="fill"
-          objectFit="cover"
-          className="z-10 transform object-right-middle "
-        /> */}
+        <FeeOnly />
       </div>
     </div>
   );

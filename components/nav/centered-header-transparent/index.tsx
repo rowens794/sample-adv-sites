@@ -207,13 +207,13 @@ const navSections = [
     icon: IdentificationIcon,
   },
   {
-    title: "The Service",
+    title: "Team",
     href: "#",
     type: "link",
     icon: BriefcaseIcon,
   },
   {
-    title: "Portfolio",
+    title: "Process",
     href: "#",
     type: "link",
     icon: NewspaperIcon,

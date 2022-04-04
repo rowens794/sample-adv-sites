@@ -1,6 +1,5 @@
 import React from "react";
-import Image from "next/image";
-import Link from "next/link";
+import Independent from "../../../components/graphics/Independent";
 
 type Props = {
   res: any;
@@ -11,21 +10,13 @@ export default function index({ res, referToWe }: Props) {
   return (
     <div className="flex flex-col-reverse max-w-5xl gap-12 px-4 py-16 mx-auto md:flex-row md:py-32">
       <div className="relative flex items-center mx-auto">
-        <div className="bg-gray-400 h-[300px] w-[300px]" />
-
-        {/* <Image
-          src="/images/client-meeting.jpg"
-          alt="client meeting"
-          layout="fill"
-          objectFit="cover"
-          className="z-10 transform object-right-middle "
-        /> */}
+        <Independent />
       </div>
 
       <div className="relative flex items-center ">
         <div className="">
           <h2 className="max-w-xl font-serif text-3xl font-light md:text-4xl text-primary-800">
-            Independent Investment Selection
+            Independent Practice
           </h2>
           <p className="block my-4 text-lg font-light text-gray-700">
             {referToWe ? "Our" : "My"} clients are the only stakeholders{" "}
