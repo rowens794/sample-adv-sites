@@ -1,6 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
 import { Popover, Transition } from "@headlessui/react";
-import Link from "next/link";
 import {
   PhoneIcon,
   BriefcaseIcon,
@@ -13,8 +12,14 @@ import {
 
 import Logo from "../../logos/logo-40px";
 
-export default function Index() {
+interface Props {
+  setOpen: any;
+  res: any;
+}
+
+export default function Index({ setOpen, res }: Props) {
   let [atTopOfPage, setAtTopOfPage] = useState(true);
+  let [showMobileMenu, setShowMobileMenu] = useState(false);
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -26,10 +31,15 @@ export default function Index() {
     });
   });
 
+  const handleClick = (e: any) => {
+    e.preventDefault();
+    setOpen(true);
+  };
+
   return (
-    <Popover
-      className={` fixed top-0 z-50 w-full  ${
-        !atTopOfPage ? " bg-primary-800 shadow-md" : null
+    <div
+      className={`fixed top-0 z-50 w-full  ${
+        !atTopOfPage ? " bg-primary-800 shadow-md" : ""
       }`}
     >
       <div className="px-4 mx-auto max-w-7xl sm:px-6">
@@ -41,14 +51,21 @@ export default function Index() {
               title="Basic Website"
               image="/images/logo.svg"
               alt="Serving our Customers"
+              line1={res.logoLine1}
+              line2={res.logoLine2}
+              textColor="text-white"
             />
           </div>
 
           <div className="-my-2 -mr-2 md:hidden">
-            <Popover.Button className="inline-flex items-center justify-center p-2 text-white rounded-md bg-primary-400 hover:bg-primary-500 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500">
+            <button className="inline-flex items-center justify-center p-2 text-white rounded-md bg-primary-600 hover:bg-primary-700 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500">
               <span className="sr-only">Open menu</span>
-              <MenuIcon className="w-6 h-6" aria-hidden="true" />
-            </Popover.Button>
+              <MenuIcon
+                className="w-6 h-6"
+                aria-hidden="true"
+                onClick={() => setShowMobileMenu(true)}
+              />
+            </button>
           </div>
 
           {/* Primary Nav Buttons Desktop */}
@@ -58,11 +75,15 @@ export default function Index() {
             })
             .map((item, i) => {
               return (
-                <Link href={item.href} key={i}>
-                  <a className="hidden text-base font-light text-white hover:text-primary-200 md:block">
-                    {item.title}
-                  </a>
-                </Link>
+                // <Link href={item.href} key={i}>
+                <a
+                  key={i}
+                  onClick={(e) => handleClick(e)}
+                  className="hidden text-base font-light text-white hover:text-primary-200 md:block hover:cursor-pointer"
+                >
+                  {item.title}
+                </a>
+                // </Link>
               );
             })}
 
@@ -74,11 +95,15 @@ export default function Index() {
               })
               .map((item, i) => {
                 return (
-                  <Link href={item.href} key={i}>
-                    <a className="inline-flex items-center justify-center px-4 py-2 ml-8 text-base font-light bg-transparent border rounded-md shadow-sm border-gray-50 text-gray-50 whitespace-nowrap hover:bg-primary-700">
-                      {item.title}
-                    </a>
-                  </Link>
+                  // <Link href={item.href} key={i}>
+                  <a
+                    key={i}
+                    onClick={(e) => handleClick(e)}
+                    className="inline-flex items-center justify-center px-4 py-2 ml-8 text-base font-light bg-transparent border rounded-md shadow-sm border-gray-50 text-gray-50 whitespace-nowrap hover:bg-primary-700 hover:cursor-pointer"
+                  >
+                    {item.title}
+                  </a>
+                  // </Link>
                 );
               })}
           </div>
@@ -86,20 +111,10 @@ export default function Index() {
       </div>
 
       {/* Primary Nav Buttons Mobile / Tablet */}
-      <Transition
-        as={Fragment}
-        enter="duration-200 ease-out"
-        enterFrom="opacity-0 scale-95"
-        enterTo="opacity-100 scale-100"
-        leave="duration-100 ease-in"
-        leaveFrom="opacity-100 scale-100"
-        leaveTo="opacity-0 scale-95"
-      >
-        <Popover.Panel
-          focus
-          className="absolute top-0 right-0 w-full p-2 transition origin-top-right transform xs:w-80 md:hidden "
-        >
-          <div className="bg-white divide-y-2 rounded-lg shadow-lg ring-black divide-gray-50 ring-1 ring-opacity-5">
+
+      {showMobileMenu ? (
+        <div className="absolute top-0 right-0 w-full p-2 transition origin-top-right transform xs:w-80 md:hidden ">
+          <div className="z-50 bg-white divide-y-2 rounded-lg shadow-lg ring-black divide-gray-50 ring-1 ring-opacity-5">
             <div className="px-5 pt-5 pb-6">
               <div className="flex items-center justify-between">
                 <Logo
@@ -107,12 +122,19 @@ export default function Index() {
                   title="Basic Website"
                   image="/images/logo.svg"
                   alt="Serving our Customers"
+                  line1={res.logoLine1}
+                  line2={res.logoLine2}
+                  textColor={"text-gray-800"}
                 />
                 <div className="-mr-2">
-                  <Popover.Button className="inline-flex items-center justify-center p-2 text-gray-400 bg-white rounded-md hover:bg-gray-200 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500">
+                  <button className="inline-flex items-center justify-center p-2 text-gray-400 bg-white rounded-md hover:bg-gray-200 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500">
                     <span className="sr-only">Close menu</span>
-                    <XIcon className="w-6 h-6" aria-hidden="true" />
-                  </Popover.Button>
+                    <XIcon
+                      className="w-6 h-6"
+                      aria-hidden="true"
+                      onClick={() => setShowMobileMenu(false)}
+                    />
+                  </button>
                 </div>
               </div>
               <div className="mt-6">
@@ -123,17 +145,21 @@ export default function Index() {
                     })
                     .map((item, i) => {
                       return (
-                        <Link href={item.href} key={i}>
-                          <a className="flex p-2 rounded-sm hover:bg-gray-100">
-                            <item.icon
-                              className="flex-shrink-0 w-6 h-6 text-primary-600"
-                              aria-hidden="true"
-                            />
-                            <span className="ml-3 text-base font-medium text-gray-900">
-                              {item.title}
-                            </span>
-                          </a>
-                        </Link>
+                        // <Link href={item.href} key={i}>
+                        <a
+                          key={i}
+                          onClick={(e) => handleClick(e)}
+                          className="flex p-2 rounded-sm hover:bg-gray-100 hover:cursor-pointer"
+                        >
+                          <item.icon
+                            className="flex-shrink-0 w-6 h-6 text-primary-600"
+                            aria-hidden="true"
+                          />
+                          <span className="ml-3 text-base font-medium text-gray-900">
+                            {item.title}
+                          </span>
+                        </a>
+                        // </Link>
                       );
                     })}
                 </nav>
@@ -147,19 +173,23 @@ export default function Index() {
                   })
                   .map((item, i) => {
                     return (
-                      <Link href={item.href} key={i}>
-                        <a className="inline-flex items-center justify-center w-full px-4 py-2 text-base font-medium text-white border rounded-md shadow-sm border-gray-50 whitespace-nowrap bg-primary-800 hover:bg-primary-900">
-                          {item.title}
-                        </a>
-                      </Link>
+                      // <Link href={item.href} key={i}>
+                      <a
+                        key={i}
+                        onClick={(e) => handleClick(e)}
+                        className="inline-flex items-center justify-center w-full px-4 py-2 text-base font-medium text-white border rounded-md shadow-sm border-gray-50 whitespace-nowrap bg-primary-800 hover:bg-primary-900 hover:cursor-pointer"
+                      >
+                        {item.title}
+                      </a>
+                      // </Link>
                     );
                   })}
               </div>
             </div>
           </div>
-        </Popover.Panel>
-      </Transition>
-    </Popover>
+        </div>
+      ) : null}
+    </div>
   );
 }
 

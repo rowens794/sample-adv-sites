@@ -7,10 +7,10 @@ type Props = {
 
 export default function index({ res, referToWe }: Props) {
   return (
-    <div className="flex flex-row justify-between h-full max-w-4xl py-32 mx-auto">
+    <div className="flex flex-col justify-between h-full max-w-4xl px-4 py-32 mx-auto md:flex-row">
       <div className="relative flex items-center max-w-sm">
         <div className="">
-          <h2 className="max-w-xl font-serif text-4xl font-light text-primary-800">
+          <h2 className="max-w-xl font-serif text-3xl font-light md:text-4xl text-primary-800">
             Advisory Experience You Can Trust
           </h2>
           <span className="block my-4 text-lg font-light text-gray-700">
@@ -18,7 +18,7 @@ export default function index({ res, referToWe }: Props) {
           </span>
           <span className="block my-4 text-lg font-light text-gray-700">
             With over two decades of experience working with high-net-worth
-            clients, {referToWe ? "We " : "I "} understand the strategies that
+            clients, {referToWe ? "we " : "I "} understand the strategies that
             will help you meet and surpass your financial goals.
           </span>
         </div>

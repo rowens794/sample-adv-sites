@@ -1,18 +1,29 @@
-import React, { Component } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
+import React, { Component } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 type Props = {
-  href: string
-  title: string
-  image: string
-  alt: string
-}
+  href: string;
+  title: string;
+  image: string;
+  alt: string;
+  line1: string;
+  line2: string;
+  textColor: string;
+};
 
-export default function index({ href, title, image, alt }: Props) {
+export default function index({
+  href,
+  title,
+  image,
+  alt,
+  line1,
+  line2,
+  textColor,
+}: Props) {
   return (
     <Link href={href}>
-      <a>
+      <a className="flex">
         <span className="sr-only">{title}</span>
         <svg
           width="40"
@@ -51,7 +62,17 @@ export default function index({ href, title, image, alt }: Props) {
             transform="matrix(0.85535619,-0.51804033,0.16019824,0.98708486,0,0)"
           />
         </svg>
+        {line2 !== "" ? (
+          <div className={`flex flex-col pl-4 font-thin ${textColor} text-md`}>
+            <span className="pt-1 leading-4">{line1}</span>
+            <span className="leading-4">{line2}</span>
+          </div>
+        ) : (
+          <div className={`flex flex-col pl-4 font-thin ${textColor}  text-md`}>
+            <span className="pt-2">{line1}</span>
+          </div>
+        )}
       </a>
     </Link>
-  )
+  );
 }

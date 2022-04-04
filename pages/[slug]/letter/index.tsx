@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Props {
   slug: string;
@@ -26,29 +27,87 @@ const index = (props: Props) => {
   let name = props.bio1Name.split(" ").slice(0, 1);
 
   return (
-    <div className="min-w-full min-h-screen pt-24 bg-gray-100">
-      <div className="max-w-2xl mx-auto text-gray-800">
+    <div className="min-w-full min-h-screen py-12 bg-gray-100 lg:py-24">
+      <div className="max-w-2xl px-4 mx-auto text-gray-800">
         <Link href={`/${props.slug}`}>
           <a className="underline text-primary-700 hover:text-primary-800">
-            {" "}
             {`<--`} Back to Demo Site
           </a>
         </Link>
         <p className="mt-8 mb-4 font-light">{name},</p>
         <p className="my-4 font-light">
-          Thanks for checking out the homepage I put together for you. While
-          this is obviously just a shot in the dark at what I could build for
-          you, I wanted to give you something tangible to interact with - with
-          copy/graphics that relate to your practice.
+          Thanks for checking out the sample homepage. I know it is coming
+          unsolicited, but I hope that seeing the image you could be presenting
+          online has piqued your interest.
         </p>
         <p className="my-4 font-light">
-          While the content and page stucture here is malleable, there is a
-          strategy behind everything on the page. From targeting organic search
-          queries (google/bing) that you could rank for locally, to actively
-          directing traffic to lead capture content, to ensuring we are
-          answering common questions users commonly have when they arrive at an
-          advisor&#39;s website. All of the content has a role.
+          There are a number of issues that this redesign would address:
         </p>
+        <ul className="ml-8">
+          <li className="font-light text-gray-800 list-decimal">
+            present a more modern, credible online presence for your practice
+          </li>
+          <li className="font-light text-gray-800 list-decimal">
+            create compelling lead capture calls-to-action
+          </li>
+          <li className="font-light text-gray-800 list-decimal">
+            better target local organic search keywords
+          </li>
+          <li className="font-light text-gray-800 list-decimal">
+            fix existing issues with site speed / on-page SEO / accessibility /
+            https
+          </li>
+        </ul>
+        <p className="my-4 font-light">
+          All of which are important in order to generate new business.
+        </p>
+        <p className="my-4 font-light">
+          Creating a website that speaks to the value of your services is more
+          important than ever. Over the last 5 years, online search for
+          financial advisors has increased by more than 700%.
+        </p>
+        <p className="text-sm font-bold text-center ">
+          Frequency of search term
+        </p>
+        <p className="text-sm font-bold text-center ">
+          &#34;financial advisors near me&#34;
+        </p>
+        <Image
+          src="/images/search-term.png"
+          width={700}
+          height={300}
+          alt="google search trends"
+        />
+        <p className="m-0 text-xs italic font-light text-right text-gray-500">
+          source:{" "}
+          <a
+            className="text-right underline light text text-primary-500"
+            href="https://trends.google.com/trends/explore?q=financial%20advisors%20near%20me&date=all&geo=US"
+          >
+            Google Trends
+          </a>
+        </p>
+        <p className="my-4 font-light">
+          If you&#39;d like to chat about making a change - I&#39;d be more than
+          happy to have a conversation. Here&#39;s a link to my{" "}
+          <a
+            className="text-primary-700 hover:text-primary-800"
+            href="https://calendly.com/ryanjowens/30min"
+          >
+            calendar
+          </a>
+          .
+        </p>
+        <p className="mt-8 mb-4 font-light">Best,</p>
+        <p className="my-4 font-light">Ryan</p>
+        <p className="font-light ">(304) 247-1817</p>
+        <p className="font-light ">ryan@webpagesthatconvert.com</p>
+        <a
+          className="font-light text-primary-700 hover:text-primary-800 "
+          href="www.webpagesthatconvert.com"
+        >
+          www.webpagesthatconvert.com
+        </a>
       </div>
     </div>
   );

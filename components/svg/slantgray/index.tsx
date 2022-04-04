@@ -5,7 +5,7 @@ type Props = {};
 export default function slant({}: Props) {
   return (
     <svg
-      className="absolute top-0 left-0 w-36 h-full -scale-x-100"
+      className="absolute top-0 left-0 h-full w-36 -scale-x-100 opacity-10 lg:opacity-10"
       viewBox="0 0 600 800"
       version="1.1"
       id="slantbox"
@@ -14,7 +14,7 @@ export default function slant({}: Props) {
     >
       <path
         id="slant"
-        className="fill-primary-800 opacity-100"
+        className=" fill-gray-800"
         d="M 400,0 H 600 V 800 H 160 Z"
       />
     </svg>

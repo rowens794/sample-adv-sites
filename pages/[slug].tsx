@@ -1,5 +1,6 @@
-import type { NextPage } from "next";
+import { useState, useEffect } from "react";
 import Head from "next/head";
+const { google } = require("googleapis");
 
 import Navigation from "../components/nav/centered-header-transparent";
 import Hero from "../components/heros/hero";
@@ -11,7 +12,8 @@ import Fiduciary from "../components/subheroSections/fiduciary";
 import Team from "../components/subheroSections/team";
 import SingleBio from "../components/subheroSections/singleBio";
 import Footer from "../components/subheroSections/footer";
-import Demo from "../components/subheroSections/DemoSite";
+import Demo from "../components/DemoSite";
+import Modal from "../components/modal";
 
 interface Props {
   slug: string;
@@ -34,76 +36,106 @@ interface Props {
   bio3Email: string;
 }
 
-const index = (props: Props) => {
+export default function Index(props: Props) {
+  const [modalOpen, setModalOpen] = useState(false);
+
   let firmSize = 1;
   if (props.bio2Name !== "") firmSize = 2;
 
   return (
     <div className="min-h-screen ">
       <Head>
-        <title>Waiting</title>
+        <title>{props.firm}</title>
         <meta
           name="description"
           content="I build custom websites for financial advisors with no upfront costs."
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Modal open={modalOpen} setOpen={setModalOpen} res={props} />
 
-      <main className="relative min-h-screen">
-        <Navigation />
-        <Hero referToWe={firmSize > 1} res={props} />
+      <main className="relative min-h-screen ">
+        <Navigation setOpen={setModalOpen} res={props} />
+        <Hero referToWe={firmSize > 1} res={props} setOpen={setModalOpen} />
         <Experience referToWe={firmSize > 1} res={props} />
-        <WhatWeDo referToWe={firmSize > 1} res={props} />
-        {/* <SubHeroSectionOne /> */}
+        <WhatWeDo referToWe={firmSize > 1} res={props} setOpen={setModalOpen} />
         <Fiduciary referToWe={firmSize > 1} res={props} />
         <FeeOnly referToWe={firmSize > 1} res={props} />
         <Independendent referToWe={firmSize > 1} res={props} />
         {props.bio1Name && props.bio2Name ? (
-          <Team />
+          <Team res={props} setOpen={setModalOpen} />
         ) : (
-          <SingleBio res={props} />
+          <SingleBio res={props} setOpen={setModalOpen} />
         )}
-        <Footer res={props} referToWe={firmSize > 1} />
+        <Footer res={props} referToWe={firmSize > 1} setOpen={setModalOpen} />
       </main>
       <Demo referToWe={firmSize > 1} res={props} />
     </div>
   );
-};
+}
 
-export default index;
-
-export async function getServerSideProps(context: any) {
-  // const res = await fetch(
-  //   `https://api.sheety.co/de8bd41567f1ba178beb77f6905c5775/advisorApi/sheet1?filter[slug]=clearcreek-financial-group`
-  // );
-  // let parsedRes = await res.json();
-
-  let parsedRes = {
-    slug: "commercial-trust-financial-services",
-    firm: "Commercial Trust Financial Services",
-    disclosure:
-      "Securities and advisory services offered through LPL Financial, a registered investment advisor. Member FINRA/SIPC.  Insurance products offered through LPL Financial or its licensed affiliates.  The investment products sold through LPL Financial are not insured Commercial Trust Company deposits and are not FDIC insured.  These products are not obligations of the Commercial Trust Company and are not endorsed, recommended or guaranteed by Commercial Trust Company or any government agency.  The value of the investment may fluctuate, the return on the investment is not guaranteed, and loss of principal is possible.Commercial Trust Company and Commercial Trust Financial Services are not registered broker/dealers and are not affiliated with LPL Financial. **The LPL Financial registered representatives of Commercial Trust Financial Services may only discuss and/or transact securities business with residents of the following states: AR, CA, CO, FL, MO, OK",
-    bio1Name: "Kyle Elliot",
-    bio1Title: "Financial Advisor",
-    bio1Photo: "/images/kyle.elliot.png",
-    bio1Phone: "660-248-2222",
-    bio1Email: "kyle.elliott@lpl.com",
-    bio1Blurb:
-      "As an experienced professional, I can help provide clarity to your financial objectives and direction toward your goals. My guidance is delivered with a level of integrity and reliability that keeps your needs at the forefront. As an independent firm, I have no proprietary products to sell and no sales quotas to meet, which means you receive recommendations that are unbiased. ** I welcome the opportunity to speak with you about your needs and objectives and the potential benefits of working with Commercial Trust Financial Services.",
-    bio2Name: "",
-    bio2Title: "",
-    bio2Photo: "",
-    bio2Phone: "",
-    bio2Email: "",
-    bio3Name: "",
-    bio3Title: "",
-    bio3Photo: "",
-    bio3Phone: "",
-    bio3Email: "",
-    totalProfessional: 4,
-  };
+export async function getServerSideProps({
+  res,
+  query,
+}: {
+  res: any;
+  query: any;
+}) {
+  let row = await getFirmRow(query.slug);
+  let values = null;
+  if (row) {
+    values = await getFirmValues(row);
+  }
 
   return {
-    props: parsedRes, // will be passed to the page component as props
+    props: values,
   };
 }
+
+const getFirmRow = (slug: string): Promise<number> => {
+  return new Promise((resolve, rej) => {
+    const sheets = google.sheets({ version: "v4" });
+    sheets.spreadsheets.values.get(
+      {
+        spreadsheetId: "19PJUnp_EE-9a21R2RxsI_yu_owei4AkltgiIJdV175s",
+        range: "Sheet1!A:A",
+        key: process.env.GOOGLE_KEY,
+      },
+      (err: any, res: any) => {
+        const rows = res.data.values;
+
+        let index = 0;
+        rows.forEach((row: string[], i: number) => {
+          if (row[0] === slug) index = i;
+        });
+        resolve(index + 1);
+      }
+    );
+  });
+};
+
+const getFirmValues = (row: number) => {
+  return new Promise(async (resolve, reject) => {
+    const sheets = google.sheets({ version: "v4" });
+
+    let header = await sheets.spreadsheets.values.get({
+      spreadsheetId: "19PJUnp_EE-9a21R2RxsI_yu_owei4AkltgiIJdV175s",
+      range: `Sheet1!A${1}:Z${1}`,
+      key: process.env.GOOGLE_KEY,
+    });
+
+    let data = await sheets.spreadsheets.values.get({
+      spreadsheetId: "19PJUnp_EE-9a21R2RxsI_yu_owei4AkltgiIJdV175s",
+      range: `Sheet1!A${row}:Z${row}`,
+      key: process.env.GOOGLE_KEY,
+    });
+
+    let obj: { [key: string]: string } = {};
+
+    header.data.values[0].forEach((item: string, i: number) => {
+      obj[item] = data.data.values[0][i];
+    });
+
+    resolve(obj);
+  });
+};
